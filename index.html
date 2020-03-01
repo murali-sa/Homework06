@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+  <link
+    rel="stylesheet"
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+  />
+  <link
+    rel="stylesheet"
+    href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+    integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf"
+    crossorigin="anonymous"
+  />
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="style.css" />
+
+  <title>Work Day Scheduler</title>
+  <!-- create table - 9 rows and 3 columns-->
+  <script  src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script >
+        $(document).ready(function(){
+            $("button").click(function(){
+ 
+              var number_of_rows = 9;
+              var number_of_cols = 3;
+ //
+              var tSlots = ["8 AM", "9 AM", "10 AM", "11 AM", "12 PM", "1 PM", "2 PM", "3 PM", "4 PM"];
+              var tTasks = ["Dog Walk", "Check mail", "Buy Grocery", "", "","", "", "", ""];
+              var tSave = '<i class="fa fa-save" style="font-size:24px;color: rgb(69, 166, 211)"></i>';
+
+              var table_body = '<table class="table table-bordered">';
+            // set table heading
+              var table_head = "<thead>";
+                  table_head += "<tr>";
+                  table_head += "<th width='15%''> Time </th>";
+                  table_head += "<th width='80%''> Task </th>";
+                  table_head += "<th width='5%''> Save </th>";
+                  table_body += table_head;
+                  $('#tableDiv').html(table_head);
+                  console.log(table_head);
+            //
+            // create the table - 9 rows and 3 columns
+            //
+            // initialize the 2-dimensional array
+              var rowTime = [];
+              var rowTask = [];
+              var rowSave = [];
+              for (i=0; i<tSlots.length; i++) {
+                 rowTime[i] = tSlots[i];
+                 rowTask[i] = tTasks[i];
+                 rowSave[i] = tSave;
+              }
+              console.log(rowTime);
+              console.log(rowTask);
+              console.log(rowSave);
+
+              for(var i=0;i<number_of_rows;i++){
+                console.log(moment().format('HH'));
+
+                table_body+='<tr class="table-active">';
+                table_body +='<td>';
+                table_body +=rowTime[i];
+                table_body +='</td>';
+                //
+                // check if rowTask exists
+                //
+                table_body +='<td>';
+                if (rowTask[i] !== "") {
+                  table_body +=rowTask[i];
+                } else {
+                  table_body +='<input type="text" id="testrow"/>';
+                  var tempTask = $("testrow").val();
+                  console.log("Entered Task = " + tempTask);
+                }
+                table_body +='</td>';
+                //
+                table_body +='<td>';
+                table_body +=rowSave[i];
+                table_body +='</td>';
+                //
+                table_body+='</tr>';
+              }
+
+                table_body+='</table>';
+
+               $('#tableDiv').html(table_body);
+            });
+        });
+        //
+        // moment js current day
+        //
+
+    </script>
+</head>
+<body>
+  <!--   -->
+  <header class="jumbotron">
+    <h1 class="display-3">Work Day Scheduler</h1>
+    <p class="lead">A simple calendar app for scheduling your work day</p>
+    <p id="currentDay" class="lead"></p>
+    
+    <script type="text/javascript">
+      // 
+      // display todays date using moment.js
+      // show day, month, date, and year
+      //
+      var todaysDate = moment();
+      var eDate = document.getElementById('currentDay');
+      eDate.innerHTML = todaysDate.format('dddd, MMMM D, YYYY');
+    </script>
+  </header>
+  <!-- -->
+<!--<div style="margin-top: 50px; margin-left: 250px"> -->
+    <button>Create Table</button>
+    <div class="container-fluid" id="tableDiv" style="margin-top: 40px">
+        
+    </div>
+<!-- </div> -->
+</body>
+</html>
