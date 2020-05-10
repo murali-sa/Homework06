@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather Forecast</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+  <div class="container">
+    <!-- container-->
+
+    <!-- 
+</div> 
+<div class="container"> -->
+    <div class="jumbotron jumbotron-fluid" style="background-image: url(texas-1584104_640.jpg);">
+      <div class="container">
+        <h3 id="forecastTitle">5-Day Weather Forecast</h3>
+        <!-- forecastTitle id will be used to write 5-day forecast for city and state name using jQuery-->
+      </div>
+    </div>
+    <!--div close of jumbotron-->
+
+    <!-- card deck arrangement-->
+    <div class="card-deck">
+      <!-- card - city selection -->
+      <div class="card bg-light">
+        <div class="card-body text-center">
+          <form>
+            <table>
+              <tr>
+                <td> <select id="city">
+                    <option>San Antonio</option>
+                    <option>Dallas</option>
+                    <option>Houston</option>
+                    <option>Austin</option>
+                    <option>El Paso</option>
+                    <option>Corpus Christi</option>
+                    <option>Galveston</option>
+                  </select>
+                </td>
+              </tr>
+            </table>
+          </form>
+          <br>
+          <button type="button" class="btn btn-dark" id="get-city">Forecast</button>
+        </div>
+      </div>
+
+      <div class="card bg-primary">
+        <div class="card-body text-center">
+          <h6 class="card-title" id="date1"></h6>
+          <p id="temperature1"></p>
+          <p id="weather1"></p>
+          <p id="humidity1"></p>
+        </div>
+      </div>
+      <div class="card bg-primary">
+        <div class="card-body text-center">
+          <h6 class="card-title" id="date2"></h6>
+          <p id="temperature2"></p>
+          <p id="weather2"></p>
+          <p id="humidity2"></p>
+        </div>
+      </div>
+      <div class="card bg-primary">
+        <div class="card-body text-center">
+          <h6 class="card-title" id="date3"></h6>
+          <p id="temperature3"></p>
+          <p id="weather3"></p>
+          <p id="humidity3"></p>
+        </div>
+      </div>
+      <div class="card bg-primary">
+        <div class="card-body text-center">
+          <h6 class="card-title" id="date4"></h6>
+          <p id="temperature4"></p>
+          <p id="weather4"></p>
+          <p id="humidity4"></p>
+        </div>
+      </div>
+      <div class="card bg-primary">
+        <div class="card-body text-center">
+          <h6 class="card-title" id="date5"></h6>
+          <p id="temperature5"></p>
+          <p id="weather5"></p>
+          <p id="humidity5"></p>
+        </div>
+      </div>
+    </div> <!-- card deck close -->
+    <!-- -->
+  </div>
+  <!--div close of container-->
+
+  <!--Image by <a href="https://pixabay.com/users/EvgeniT-4930349/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=4167939">Evgeni Tcherkasski</a> from <a href="https://pixabay.com/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=4167939">Pixabay</a>-->
+  <!-- Image by <a href="https://pixabay.com/users/12019-12019/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=1584104">David Mark</a> from <a href="https://pixabay.com/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=1584104">Pixabay</a>-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/JavaScript" src="https://MomentJS.com/downloads/moment.js"></script>
+  <!-- script -->
+  <script type="text/javascript">
+    $("#get-city").click(function () {
+      var qCity = $("#city").val();
+
+      // This is our API key
+      var APIKey = "166a433c57516f51dfab1f7edaed8413";
+
+      // Here we are building the URL we need to query the database
+      //
+      // will get a function to return the city and state from a function
+      //
+      // var qCity = "San Antonio";
+      var qCity = $("#city").val();
+      var qState = "Texas";
+      var queryURL = "https://api.openweathermap.org/data/2.5/forecast?" + "q=" + qCity + "," + qState + "&units=imperial&appid=" + APIKey;
+      // var queryURL = "https://api.openweathermap.org/data/2.5/forecast?" + "q=San Antonio,Texas&appid=" + APIKey;
+      // Here we run our AJAX call to the OpenWeatherMap API
+
+      $.ajax({
+        url: queryURL,
+        method: "GET"
+      })
+        // We store all of the retrieved data inside of an object called "response"
+        .then(function (response) {
+
+          // Log the queryURL
+          console.log(queryURL);
+          console.log(response);
+          // Log the resulting object
+          // number of days of forecast
+          //
+          console.log("city Name: " + response.city.name);
+          console.log("date: " + moment().format('LL'));
+          var idDate = "";
+          var idTemperature = "";
+          var idWeather = "";
+          var idHumidity = "";
+
+          $("#forecastTitle").text("5-Day Weather Forecast for " + qCity + ", " + qState);
+
+          for (var i = 0; i < 5; i++) {
+            // for 5 day forecast
+            var nforecast = i * 8;
+            console.log("day " + parseInt(i + 1) + " forecast");
+            idDate = "#date" + parseInt(i + 1);
+            idTemperature = "#temperature" + parseInt(i + 1);
+            idWeather = "#weather" + parseInt(i + 1);
+            idHumidity = "#humidity" + parseInt(i + 1);
+            //
+            $(idDate).text(moment().add('days', parseInt(i)).format('l'));
+            $(idTemperature).text("Temp: " + (response.list[nforecast].main.temp).toFixed() + "\xB0 F");
+            $(idWeather).text(response.list[nforecast].weather[0].main);
+            $(idHumidity).text("Humidity: " + response.list[nforecast].main.humidity + "%");
+
+            console.log("  temp K: " + response.list[nforecast].main.temp);
+            console.log("  humidity: " + response.list[nforecast].main.humidity);
+            console.log("  weather: " + response.list[nforecast].weather[0].main);
+          }
+
+          // Transfer content to HTML
+          $(".city").html("<h1>" + response.name + " Weather Details</h1>");
+          $(".wind").text("Wind Speed: " + response.wind.speed);
+          $(".humidity").text("Humidity: " + response.main.humidity);
+          $(".temp").text("Temperature (F) " + response.main.temp);
+
+          // Converts the temp to Kelvin with the below formula
+          var tempF = (response.main.temp - 273.15) * 1.80 + 32;
+          $(".tempF").text("Temperature (Kelvin) " + tempF);
+
+          // Log the data in the console as well
+          console.log("Wind Speed: " + response.wind.speed);
+          console.log("Humidity: " + response.main.humidity);
+          console.log("Temperature (F): " + response.main.temp);
+        });
+    }); // end of "if statement"
+  </script>
+</body>
+
+</html>
